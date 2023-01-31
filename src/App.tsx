@@ -1,12 +1,13 @@
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import InputField from './components/input/InputField';
 
 function App() {
   console.log(import.meta.env.VITE_API_KEY);
 
   return (
     <ChakraProvider>
-      <div className="App"></div>
+      <InputField />
     </ChakraProvider>
   );
 }
