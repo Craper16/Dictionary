@@ -33,7 +33,7 @@ const wordSlice = createSlice({
       state.word = action.payload;
       state.isError = false;
       state.isLoading = false;
-      state.isSuccess = false;
+      state.isSuccess = true;
       state.message = null;
     });
     builder.addCase(FetchWord.rejected, (state, action) => {
