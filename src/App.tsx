@@ -1,14 +1,17 @@
-import './App.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import InputField from './components/input/InputField';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import Word from './components/word/Word';
 
 function App() {
-  console.log(import.meta.env.VITE_API_KEY);
-
   return (
-    <ChakraProvider>
-      <InputField />
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider>
+        <InputField />
+        <Word />
+      </ChakraProvider>
+    </Provider>
   );
 }
 
