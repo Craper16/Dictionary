@@ -21,7 +21,11 @@ const initialState: wordSlice = {
 const wordSlice = createSlice({
   name: 'word',
   initialState,
-  reducers: {},
+  reducers: {
+    defaultWord: (state) => {
+      state.word = initialState.word;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(FetchWord.pending, (state) => {
       state.isSuccess = false;
@@ -44,5 +48,7 @@ const wordSlice = createSlice({
     });
   },
 });
+
+export const { defaultWord } = wordSlice.actions;
 
 export default wordSlice.reducer;

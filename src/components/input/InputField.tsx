@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   IconButton,
   Input,
@@ -9,6 +9,7 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { FetchWord } from '../../redux/word/wordActions';
+import { defaultWord } from '../../redux/word/wordSlice';
 
 export default function InputField() {
   const dispatch = useAppDispatch();
@@ -35,7 +36,11 @@ export default function InputField() {
               icon={<SearchIcon />}
               onClick={() => {
                 if (search) {
-                  return dispatch(FetchWord(search)), setSearch('');
+                  return (
+                    dispatch(FetchWord(search)),
+                    dispatch(defaultWord()),
+                    setSearch('')
+                  );
                 }
                 return;
               }}

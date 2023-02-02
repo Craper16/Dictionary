@@ -23,6 +23,8 @@ export default function Word() {
     }
   }, [isLoading]);
 
+  console.log(audios);
+
   useEffect(() => {
     if (isSuccess) {
       word.map((word) =>
@@ -100,6 +102,34 @@ export default function Word() {
               {definition}
             </Text>
           ))
+        )}
+        <Text textAlign='center' color='white' fontSize={30} fontWeight='bold'>
+          Synonyms
+        </Text>
+        {word[0].meanings[0].synonyms.length !== 0 ? (
+          word[0].meanings[0].synonyms.map((synonym, i) => (
+            <Text key={i} textAlign='center' color='white'>
+              {synonym}
+            </Text>
+          ))
+        ) : (
+          <Text color='white' textAlign='center'>
+            No synonyms found
+          </Text>
+        )}
+        <Text textAlign='center' color='white' fontSize={30} fontWeight='bold'>
+          Antonyms
+        </Text>
+        {word[0].meanings[0].antonyms.length !== 0 ? (
+          word[0].meanings[0].antonyms.map((antonym, i) => (
+            <Text key={i} textAlign='center' color='white'>
+              {antonym}
+            </Text>
+          ))
+        ) : (
+          <Text textAlign='center' color='white'>
+            No antonyms found
+          </Text>
         )}
         <Text textAlign='right' color='white' margin={6} marginTop={10}>
           Source: {word[0].sourceUrls[0]}
