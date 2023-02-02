@@ -1,12 +1,20 @@
-import { Grid, GridItem, Icon, Skeleton, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Icon,
+  Progress,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import { MdAudiotrack } from 'react-icons/all';
 
 export default function Word() {
   const { isLoading, isSuccess, word } = useAppSelector((state) => state.word);
-
-  const [play, setPlay] = useState(false);
   const [audios, setAudios] = useState<HTMLAudioElement[]>([]);
 
   useEffect(() => {
@@ -30,79 +38,73 @@ export default function Word() {
     }
   }, [isSuccess]);
 
-  console.log(audios);
+  if (!isLoading && word.length === 0) {
+    return null;
+  }
 
-  return (
-    <>
-      {isLoading ? (
-        <Skeleton />
-      ) : (
-        word.map(({ word, meanings, phonetic, phonetics, sourceUrls }, i) => (
-          <div
-            style={{ margin: 20 }}
-            key={i}
-          >
-            <Grid
-              h="200px"
-              templateRows="repeat(2, 1fr)"
-              templateColumns="repeat(5, 1fr)"
-              gap={4}
-            >
-              <GridItem
-                rowSpan={2}
-                colSpan={1}
-              >
-                <Text
-                  textAlign="center"
-                  justifyContent="center"
-                  marginTop="9%"
-                  fontWeight="bold"
-                  color="white"
-                  fontSize={90}
-                >
-                  {word}
-                </Text>
-                {audios.length !== 0 &&
-                  audios.map((audio, i) => (
-                    <Icon
-                      key={i}
-                      as={MdAudiotrack}
-                      onClick={() => audio.play()}
-                    />
-                  ))}
-              </GridItem>
-              <GridItem colSpan={2}>
-                <Text
-                  textAlign="center"
-                  fontWeight="bold"
-                  fontSize={24}
-                  color="white"
-                >
-                  Parts of speech:
-                </Text>
-                {meanings.map((meaning, i) => (
-                  <Text
-                    key={i}
-                    textAlign="center"
-                    color="white"
-                    fontSize={20}
-                  >
-                    {meaning.partOfSpeech}
-                  </Text>
-                ))}
-              </GridItem>
-              <GridItem
-                colSpan={2}
-                bg="papayawhip"
-              ></GridItem>
-              <GridItem
-                colSpan={4}
-                bg="tomato"
-              ></GridItem>
-            </Grid>
-          </div>
-        ))
-      )}
-    </>
+  return isLoading ? (
+    <Progress
+      isIndeterminate
+      margin='auto'
+      marginTop={4}
+      colorScheme='blackAlpha'
+    />
+  ) : (
+    <Card backgroundColor='#242424' variant='unstyled' marginTop={10}>
+      <CardHeader>
+        <Heading color='white' size='4xl' textAlign='center'>
+          {word[0].word}
+        </Heading>
+        <Box
+          as='span'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          margin='auto'
+        >
+          <Text color='white' fontSize={30} textAlign='center' margin={3}>
+            {word[0].phonetic + ' '}
+          </Text>
+          {audios.map((audio, i) => (
+            <Icon
+              key={i}
+              as={MdAudiotrack}
+              color='white'
+              alignItems='center'
+              textAlign='center'
+              onClick={() => audio.play()}
+            />
+          ))}
+        </Box>
+        <Box
+          as='span'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          margin='auto'
+        >
+          {word[0].meanings.map(({ partOfSpeech }, i) => (
+            <Text key={i} color='white' margin={3}>
+              {partOfSpeech.toUpperCase()}
+            </Text>
+          ))}
+        </Box>
+      </CardHeader>
+      <CardBody>
+        <Text textAlign='center' color='white' fontSize={30} fontWeight='bold'>
+          Definitions
+        </Text>
+        {word[0].meanings.map((meaning) =>
+          meaning.definitions.map(({ definition }, i) => (
+            <Text key={i} textAlign='center' color='white'>
+              {definition}
+            </Text>
+          ))
+        )}
+        <Text textAlign='right' color='white' margin={6} marginTop={10}>
+          Source: {word[0].sourceUrls[0]}
+        </Text>
+      </CardBody>
+    </Card>
   );
 }
