@@ -27,6 +27,8 @@ export default function InputField() {
           type='text'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          autoCorrect='all'
+          autoComplete='all'
         />
         <InputRightElement
           children={
